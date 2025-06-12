@@ -1,5 +1,6 @@
 const sketchpad = document.querySelector('.sketchpad');
 const button = document.querySelector('.size-setter');
+let userPromptDimensions = 16;
 getSketchProperty = window.getComputedStyle(sketchpad).getPropertyValue("width");
 sketchpadWidth = parseInt( getSketchProperty, 10);
 
@@ -22,7 +23,8 @@ resetButton.addEventListener("click", resetBoard)
 
 function resetBoard () {
     sketchpad.innerHTML = "";
-    createPixel(16);
+    createPixel(userPromptDimensions);
+
 }
 
 //create toggle that changes return of colorRandomizer function
@@ -31,7 +33,6 @@ toggle.addEventListener('click', toggleColor);
 
 let coloredTheme = "Theme: Colored";
 let blackTheme = "Theme: Black and White";
-let userPromptDimensions = 16;
 
 function toggleColor(e) {
     if (e.target.textContent === coloredTheme) {
@@ -89,7 +90,7 @@ button.addEventListener("click", getSketchpadDimensions)
 
 function getSketchpadDimensions (e) {
     const userPrompt = parseInt(prompt("Please select size of sketchpad (e.g. 16 = 16 x 16). Cannot be 0 or more than 100. Recommended: 32.", 16))
-    if (userPrompt !== 0 && userPrompt <= 100) {
+    if (userPrompt !== 0 && userPrompt <= 100 && userPrompt) {
         sketchpad.innerHTML = "";
         createPixel(userPrompt);
     }  else {
