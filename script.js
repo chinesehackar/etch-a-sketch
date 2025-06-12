@@ -16,10 +16,14 @@ function createPixel(dimension) {
 
 createPixel(16);
 
-//when mouse hovers, change color of pixel
-//event listener mouseover for each div
+//reset drawing board
+const resetButton = document.querySelector(".reset-button");
+resetButton.addEventListener("click", resetBoard)
 
-const pixels = document.querySelectorAll(".sketchpad div")
+function resetBoard () {
+    sketchpad.innerHTML = "";
+    createPixel(16);
+}
 
 //create toggle that changes return of colorRandomizer function
 const toggle = document.querySelector('.color-theme');
@@ -42,6 +46,8 @@ function toggleColor(e) {
     return e.target.textContent
 }
 
+//when mouse hovers, change color of pixel
+//event listener mouseover for each div
 document.addEventListener("mouseover", function (e) {
 
     //randomize rgb. rgb accepts from 0 to 255
