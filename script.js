@@ -8,6 +8,7 @@ function createPixel(dimension) {
     for (let i = 0; i < (dimension**2); i++) {
         const pixel = document.createElement('div'); 
         pixel.classList.add("pixel");
+        pixel.setAttribute("data-opacity", 0.1)
         sketchpad.appendChild(pixel);
         pixel.style.width = `${(sketchpadWidth-2)/dimension}px`;
     }
@@ -16,13 +17,35 @@ function createPixel(dimension) {
 createPixel(16);
 
 //when mouse hovers, change color of pixel
-//event listener mouseover and mouseout for each div
+//event listener mouseover for each div
 
 const pixels = document.querySelectorAll(".sketchpad div")
 
 document.addEventListener("mouseover", function (e) {
+
+    //randomize rgb. rgb accepts from 0 to 255
+    function colorRandomizer() {
+        let rgbArgs = [];
+        
+        for (let i = 0; i < 3; i++) {
+            let randomNumber = Math.floor(Math.random() * 257);
+            rgbArgs.push(randomNumber);
+        }
+        return `${rgbArgs[0]}, ${rgbArgs[1]}, ${rgbArgs[2]}`
+    }
+    
     if (e.target.matches(".pixel")) {
-        e.target.classList.add("colored");
+        //every time e.target is a pixel, get data-opacity attribute
+        //set opacity
+        //update that e.target's data-opacity attribute
+        let opacity = e.target.dataset.opacity;
+        console.log(opacity);
+        e.target.style.backgroundColor = `rgb(${colorRandomizer()})`;
+
+        if (opacity < 1) {
+            e.target.style.opacity = opacity;
+            e.target.setAttribute('data-opacity', Math.round((Number(opacity) + 0.1) * 10) / 10);
+        }
     }
 })
 //event listner on button click, get input from user
