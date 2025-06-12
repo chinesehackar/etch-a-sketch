@@ -27,12 +27,17 @@ toggle.addEventListener('click', toggleColor);
 
 let coloredTheme = "Theme: Colored";
 let blackTheme = "Theme: Black and White";
+let userPromptDimensions = 16;
 
 function toggleColor(e) {
     if (e.target.textContent === coloredTheme) {
         e.target.textContent = blackTheme;
+        sketchpad.innerHTML = "";
+        createPixel(userPromptDimensions);
     } else if (e.target.textContent === blackTheme) {
         e.target.textContent = coloredTheme;
+        sketchpad.innerHTML = "";
+        createPixel(userPromptDimensions);
     }
     return e.target.textContent
 }
@@ -58,21 +63,25 @@ document.addEventListener("mouseover", function (e) {
         //every time e.target is a pixel, get data-opacity attribute
         //set opacity
         //update that e.target's data-opacity attribute
-        let opacity = e.target.dataset.opacity;
-        console.log(opacity);
-        e.target.style.backgroundColor = `rgb(${colorRandomizer()})`;
+        let opacity = Number(e.target.dataset.opacity);
+        const rgb = colorRandomizer();
 
         if (opacity < 1) {
-            e.target.style.opacity = opacity;
             e.target.setAttribute('data-opacity', Math.round((Number(opacity) + 0.1) * 10) / 10);
+            opacity = Math.round((opacity) * 10) / 10
         }
+
+        e.target.style.backgroundColor = `rgba(${rgb}, ${opacity})`
+        console.log(opacity);
     }
 })
 //event listner on button click, get input from user
 //if input <= 100, delete all divs and replace new ones with callback function
 //else if input === 0 or above 100, alert user: please select valid input (1-100);
 
-button.addEventListener("click", () => {
+button.addEventListener("click", getSketchpadDimensions)
+
+function getSketchpadDimensions (e) {
     const userPrompt = parseInt(prompt("Please select size of sketchpad (e.g. 16 = 16 x 16). Cannot be 0 or more than 100. Recommended: 32.", 16))
     if (userPrompt !== 0 && userPrompt <= 100) {
         sketchpad.innerHTML = "";
@@ -80,4 +89,5 @@ button.addEventListener("click", () => {
     }  else {
         alert('Please select a valid input (1 - 100)')
     }
-})
+    userPromptDimensions = userPrompt;
+}
