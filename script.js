@@ -1,5 +1,5 @@
 const sketchpad = document.querySelector('.sketchpad');
-const button = document.querySelector('button');
+const button = document.querySelector('.size-setter');
 getSketchProperty = window.getComputedStyle(sketchpad).getPropertyValue("width");
 sketchpadWidth = parseInt( getSketchProperty, 10);
 
@@ -21,15 +21,35 @@ createPixel(16);
 
 const pixels = document.querySelectorAll(".sketchpad div")
 
+//create toggle that changes return of colorRandomizer function
+const toggle = document.querySelector('.color-theme');
+toggle.addEventListener('click', toggleColor);
+
+let coloredTheme = "Theme: Colored";
+let blackTheme = "Theme: Black and White";
+
+function toggleColor(e) {
+    if (e.target.textContent === coloredTheme) {
+        e.target.textContent = blackTheme;
+    } else if (e.target.textContent === blackTheme) {
+        e.target.textContent = coloredTheme;
+    }
+    return e.target.textContent
+}
+
 document.addEventListener("mouseover", function (e) {
 
     //randomize rgb. rgb accepts from 0 to 255
     function colorRandomizer() {
         let rgbArgs = [];
-        
-        for (let i = 0; i < 3; i++) {
-            let randomNumber = Math.floor(Math.random() * 257);
-            rgbArgs.push(randomNumber);
+
+        if (toggle.textContent === coloredTheme) {
+            for (let i = 0; i < 3; i++) {
+                let randomNumber = Math.floor(Math.random() * 257);
+                rgbArgs.push(randomNumber);
+            }
+        } else if (toggle.textContent === blackTheme) {
+            rgbArgs = [0, 0, 0];
         }
         return `${rgbArgs[0]}, ${rgbArgs[1]}, ${rgbArgs[2]}`
     }
